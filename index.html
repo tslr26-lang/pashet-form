@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שאלון התאמה לסדנת ההשקעות | פשוט להשקיע</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+            background: #F0F4F8;
+            color: #2C3E50;
+            min-height: 100vh;
+            direction: rtl;
+        }
+
+        /* ── Header ── */
+        .page-header {
+            background: #1B2D4F;
+            padding: 28px 20px;
+            text-align: center;
+        }
+
+        .logo-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* להחליף את הטקסט הזה בתגית <img src="logo.png" height="56"> */
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            background: #E8A020;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            color: #1B2D4F;
+            flex-shrink: 0;
+        }
+
+        .logo-text-wrap { text-align: right; }
+        .logo-name { color: #E8A020; font-size: 26px; font-weight: 800; }
+        .logo-tagline { color: rgba(255,255,255,0.65); font-size: 13px; margin-top: 3px; }
+
+        /* ── Layout ── */
+        .container {
+            max-width: 660px;
+            margin: 0 auto;
+            padding: 36px 16px 64px;
+        }
+
+        /* ── Intro card ── */
+        .intro-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px 32px;
+            margin-bottom: 20px;
+            border-right: 5px solid #E8A020;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+        }
+
+        .intro-card h1 {
+            font-size: 21px;
+            color: #1B2D4F;
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .intro-card p {
+            font-size: 15px;
+            line-height: 1.85;
+            color: #4A5568;
+        }
+
+        /* ── Form card ── */
+        .form-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 36px 32px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+        }
+
+        /* ── Questions ── */
+        .form-group { margin-bottom: 28px; }
+
+        label.question {
+            display: block;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1B2D4F;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .req { color: #E53E3E; margin-right: 2px; }
+
+        /* ── Inputs ── */
+        input[type="text"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E2E8F0;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #2C3E50;
+            font-family: inherit;
+            background: #FAFBFC;
+            direction: rtl;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #E8A020;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(232,160,32,0.15);
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        /* ── Radio & Checkbox ── */
+        .choice-group { display: flex; flex-direction: column; gap: 10px; }
+
+        .choice-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 13px 16px;
+            border: 2px solid #E2E8F0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.18s;
+            user-select: none;
+        }
+
+        .choice-option:hover { border-color: #E8A020; background: #FFFBF2; }
+
+        .choice-option.selected { border-color: #E8A020; background: #FFFBF2; }
+
+        .choice-option input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 2px;
+            accent-color: #E8A020;
+        }
+
+        .choice-option span { font-size: 15px; line-height: 1.5; color: #2C3E50; }
+
+        /* ── Divider ── */
+        hr { border: none; border-top: 1px solid #EDF2F7; margin: 10px 0 28px; }
+
+        /* ── Submit button ── */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: #E8A020;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 19px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .submit-btn:hover {
+            background: #C98B10;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(232,160,32,0.35);
+        }
+
+        .submit-btn:active { transform: translateY(0); }
+
+        .submit-btn:disabled {
+            background: #A0AEC0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ── Error ── */
+        .error-msg {
+            display: none;
+            background: #FFF5F5;
+            color: #C53030;
+            border: 1px solid #FEB2B2;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* ── Success screen ── */
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 56px 24px;
+        }
+
+        .success-icon { font-size: 72px; margin-bottom: 20px; }
+
+        .success-screen h2 {
+            font-size: 26px;
+            color: #1B2D4F;
+            margin-bottom: 14px;
+        }
+
+        .success-screen p { font-size: 16px; color: #4A5568; line-height: 1.8; }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            color: #A0AEC0;
+            font-size: 12px;
+            margin-top: 28px;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 560px) {
+            .intro-card, .form-card { padding: 24px 18px; }
+            .intro-card h1 { font-size: 18px; }
+            .logo-name { font-size: 22px; }
+            .container { padding: 24px 12px 48px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ Header ══ -->
+<header class="page-header">
+    <div class="logo-wrap">
+        <!--
+            להוספת לוגו:
+            מחק את .logo-icon ואת .logo-text-wrap
+            ושים במקומם: <img src="logo.png" alt="פשוט להשקיע" height="56">
+        -->
+        <div class="logo-icon">פ</div>
+        <div class="logo-text-wrap">
+            <div class="logo-name">פשוט להשקיע</div>
+            <div class="logo-tagline">השקעות פשוטות להורים עסוקים</div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- ══ Intro ══ -->
+    <div class="intro-card">
+        <h1>שאלון התאמה לסדנת ההשקעות</h1>
+        <p>
+            שאלון ההתאמה נועד כדי שאוכל להכיר אותך, להבין איפה המצב הפיננסי שלך עומד כרגע,
+            ולבדוק האם אני האדם הנכון שיכול לעזור לך לעלות שלב.
+            <br><br>
+            <strong>חשוב לי לציין:</strong> מילוי השאלון אינו מבטיח הצטרפות אוטומטית לסדנה.
+            זהו שלב ראשוני בלבד, שנועד לוודא שיש בינינו התאמה מלאה ושאני באמת יכול להביא לך ערך מקסימלי.
+        </p>
+    </div>
+
+    <!-- ══ Form card ══ -->
+    <div class="form-card">
+        <form id="mainForm">
+
+            <!-- שם מלא -->
+            <div class="form-group">
+                <label class="question" for="name">שם מלא בבקשה <span class="req">*</span></label>
+                <input type="text" id="name" name="שם מלא" placeholder="הקלד את שמך המלא" required>
+            </div>
+
+            <!-- גיל -->
+            <div class="form-group">
+                <label class="question" for="age">בן כמה את/ה? <span class="req">*</span></label>
+                <input type="text" id="age" name="גיל" placeholder="למשל: 35" required>
+            </div>
+
+            <!-- מינוס -->
+            <div class="form-group">
+                <label class="question">האם את/ה נמצא/ת במינוס? <span class="req">*</span></label>
+                <div class="choice-group">
+                    <label class="choice-option">
+                        <input type="radio" name="במינוס" value="כן" required>
+                        <span>כן</span>
+                    </label>
+                    <label class="choice-option">
+                        <input type="radio" name="במינוס" value="לא">
+                        <span>לא</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- מחסום -->
+            <div class="form-group">
+                <label class="question">מה המחסום העיקרי שמונע ממך להתחיל להשקיע כבר היום? <span class="req">*</span></label>
+                <div class="choice-group" id="obstacleGroup">
+                    <label class="choice-option">
+                        <input type="checkbox" name="מחסום" value="מרגיש שיש יותר מדי מידע בחוץ ואני לא יודע מאיפה להתחיל וממה להיזהר">
+                        <span>מרגיש שיש יותר מדי מידע בחוץ ואני לא יודע מאיפה להתחיל וממה להיזהר</span>
+                    </label>
+                    <label class="choice-option">
+                        <input type="checkbox" name="מחסום" value="אין לי מספיק ביטחון להשקיע עצמאית">
+                        <span>אין לי מספיק ביטחון להשקיע עצמאית</span>
+                    </label>
+                    <label class="choice-option">
+                        <input type="checkbox" name="מחסום" value="מפחד לעשות טעויות">
+                        <span>מפחד לעשות טעויות</span>
+                    </label>
+                    <label class="choice-option">
+                        <input type="checkbox" name="מחסום" value="חוסר זמן / דחיינות">
+                        <span>חוסר זמן / דחיינות</span>
+                    </label>
+                    <label class="choice-option">
+                        <input type="checkbox" name="מחסום" value="אחר">
+                        <span>אחר</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- הערות -->
+            <div class="form-group">
+                <label class="question" for="notes">משהו נוסף שתרצה שאדע לפני שאתקשר?</label>
+                <textarea id="notes" name="הערות נוספות" placeholder="כתוב כאן בחופשיות..."></textarea>
+            </div>
+
+            <!-- טלפון -->
+            <div class="form-group">
+                <label class="question" for="phone">מספר הטלפון שלך כדי שאוכל לחזור אלייך? <span class="req">*</span></label>
+                <input type="tel" id="phone" name="מספר טלפון" placeholder="050-0000000" required>
+            </div>
+
+            <hr>
+
+            <button type="submit" class="submit-btn" id="submitBtn">לחץ כאן לשליחת פרטים!</button>
+
+            <div class="error-msg" id="errorMsg">
+                אירעה שגיאה בשליחה. אנא נסה שנית או שלח הודעה ישירה.
+            </div>
+
+        </form>
+
+        <!-- ══ מסך הצלחה ══ -->
+        <div class="success-screen" id="successScreen">
+            <div class="success-icon">✅</div>
+            <h2>תודה! קיבלנו את הפרטים שלך</h2>
+            <p>אחזור אליך בהקדם.<br>מצפה לשיחה שלנו 🙏</p>
+        </div>
+
+    </div>
+
+    <div class="footer">פשוט להשקיע | כל הזכויות שמורות</div>
+
+</div>
+
+<script>
+    // ── הדגשת בחירה נבחרת ──
+    document.querySelectorAll('.choice-option input').forEach(function(input) {
+        input.addEventListener('change', function() {
+            if (this.type === 'radio') {
+                document.querySelectorAll('input[name="' + this.name + '"]').forEach(function(r) {
+                    r.closest('label').classList.remove('selected');
+                });
+            }
+            this.closest('label').classList.toggle('selected', this.checked);
+        });
+    });
+
+    // ── שליחת טופס ──
+    document.getElementById('mainForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        var btn = document.getElementById('submitBtn');
+        var errorMsg = document.getElementById('errorMsg');
+
+        // וידוא שנבחר לפחות מחסום אחד
+        var checked = document.querySelectorAll('input[name="מחסום"]:checked');
+        if (checked.length === 0) {
+            document.getElementById('obstacleGroup').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('obstacleGroup').style.outline = '2px solid #E53E3E';
+            setTimeout(function() {
+                document.getElementById('obstacleGroup').style.outline = '';
+            }, 2000);
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'שולח...';
+        errorMsg.style.display = 'none';
+
+        var obstacles = Array.from(checked).map(function(c) { return c.value; }).join(' | ');
+
+        var payload = {
+            'שם מלא':        document.getElementById('name').value,
+            'גיל':           document.getElementById('age').value,
+            'במינוס':        (document.querySelector('input[name="במינוס"]:checked') || {}).value || '',
+            'מחסום עיקרי':   obstacles,
+            'הערות נוספות':  document.getElementById('notes').value || '—',
+            'מספר טלפון':    document.getElementById('phone').value,
+            '_subject':      'שאלון התאמה חדש – פשוט להשקיע',
+            '_template':     'table',
+            '_captcha':      'false'
+        };
+
+        try {
+            var res = await fetch('https://formsubmit.co/ajax/tslr26@gmail.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            var data = await res.json();
+
+            if (data.success === 'true' || data.success === true) {
+                document.getElementById('mainForm').style.display = 'none';
+                document.getElementById('successScreen').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                throw new Error('failed');
+            }
+        } catch (err) {
+            errorMsg.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = 'לחץ כאן לשליחת פרטים!';
+        }
+    });
+</script>
+
+</body>
+</html>
