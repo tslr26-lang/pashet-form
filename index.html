@@ -20,7 +20,6 @@
       --opt-hover: #FFF3DC;
       --radius: 18px;
       --shadow: 0 4px 24px rgba(0,0,0,0.08);
-      --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -37,9 +36,7 @@
     .page {
       max-width: 480px;
       margin: 0 auto;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      padding-bottom: 48px;
     }
 
     /* ── Header ── */
@@ -70,7 +67,6 @@
     .intro-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
       background: linear-gradient(135deg, var(--orange), var(--yellow));
       color: white;
       font-size: 12px;
@@ -78,7 +74,6 @@
       padding: 4px 12px;
       border-radius: 20px;
       margin-bottom: 12px;
-      width: fit-content;
     }
 
     .intro-title {
@@ -97,45 +92,18 @@
     }
     .intro-text strong { color: var(--text); font-weight: 700; }
 
-    /* ── Progress dots ── */
-    .progress-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 18px 24px 0;
-    }
-    .dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: #E5E0D8;
-      transition: all 0.4s cubic-bezier(.4,0,.2,1);
-      flex-shrink: 0;
-    }
-    .dot.done   { background: var(--orange); }
-    .dot.active { background: var(--orange); width: 28px; border-radius: 5px; box-shadow: 0 0 0 3px rgba(245,166,35,0.25); }
+    /* ── Form card ── */
+    .form-wrap { padding: 16px 20px 0; }
 
-    /* ── Form wrap ── */
-    .form-wrap {
-      padding: 18px 20px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ── Card ── */
-    .card {
+    .form-card {
       background: var(--card);
       border-radius: var(--radius);
       padding: 24px 22px;
       box-shadow: var(--shadow);
-      flex: 1;
-      display: flex;
-      flex-direction: column;
       position: relative;
       overflow: hidden;
     }
-    .card::before {
+    .form-card::before {
       content: '';
       position: absolute;
       top: 0; right: 0; left: 0;
@@ -144,39 +112,43 @@
       border-radius: var(--radius) var(--radius) 0 0;
     }
 
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-30px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-
-    .step-badge {
-      display: inline-flex;
-      align-items: center;
-      background: linear-gradient(135deg, var(--orange), var(--yellow));
-      color: white;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 14px;
-      width: fit-content;
-    }
+    /* ── Question groups ── */
+    .form-group { margin-bottom: 26px; }
+    .form-group:last-of-type { margin-bottom: 0; }
 
     .q-label {
-      font-size: 19px;
+      font-size: 16px;
       font-weight: 800;
       color: var(--dark);
       line-height: 1.5;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .q-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 1px;
     }
 
     /* ── Inputs ── */
     .field-input {
       width: 100%;
-      padding: 14px 16px;
+      padding: 13px 16px;
       border: 2px solid #E5E0D8;
       border-radius: 14px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 500;
       color: var(--text);
       font-family: 'Heebo', sans-serif;
@@ -190,17 +162,17 @@
       background: #fff;
       box-shadow: 0 0 0 3px rgba(245,166,35,0.18);
     }
-    textarea.field-input { min-height: 100px; resize: vertical; }
+    textarea.field-input { min-height: 96px; resize: vertical; }
 
     /* ── Options ── */
-    .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+    .options { display: flex; flex-direction: column; gap: 9px; }
 
     .opt {
       background: var(--opt-bg);
       border: 2px solid transparent;
       border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 15px;
+      padding: 13px 15px;
+      font-size: 14.5px;
       font-weight: 600;
       color: var(--text);
       text-align: right;
@@ -217,20 +189,20 @@
     }
     .opt-text { flex: 1; }
     .opt-icon {
-      width: 22px; height: 22px;
+      width: 20px; height: 20px;
       border-radius: 50%;
       border: 2px solid #D1CBC1;
       flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px;
+      font-size: 11px;
       transition: all 0.2s;
     }
-    .opt.checkbox .opt-icon { border-radius: 6px; }
+    .opt.checkbox .opt-icon { border-radius: 5px; }
 
     .opt:hover {
       background: var(--opt-hover);
       border-color: rgba(245,166,35,0.45);
-      transform: translateX(-3px);
+      transform: translateX(-2px);
     }
     .opt.selected {
       background: var(--opt-hover);
@@ -240,34 +212,34 @@
       background: var(--orange);
       border-color: var(--orange);
       color: white;
-      font-size: 11px;
     }
 
-    /* ── Spacer ── */
-    .spacer { flex: 1; min-height: 20px; }
+    /* ── Divider ── */
+    .divider { border: none; border-top: 1px solid #F0EBE3; margin: 26px 0; }
 
-    /* ── Action button ── */
-    .action-btn {
+    /* ── Submit ── */
+    .submit-btn {
       background: linear-gradient(135deg, var(--orange) 0%, var(--yellow) 100%);
       border: none;
       border-radius: 50px;
       padding: 16px;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 800;
       color: var(--dark);
       cursor: pointer;
       width: 100%;
       box-shadow: 0 4px 16px rgba(245,166,35,0.35);
-      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+      transition: transform 0.15s, box-shadow 0.15s;
       font-family: 'Heebo', sans-serif;
+      margin-top: 28px;
     }
-    .action-btn:hover:not(:disabled) {
+    .submit-btn:hover:not(:disabled) {
       transform: translateY(-2px);
       box-shadow: 0 6px 24px rgba(245,166,35,0.45);
     }
-    .action-btn:active:not(:disabled) { transform: translateY(0); }
-    .action-btn:disabled {
-      opacity: 0.35;
+    .submit-btn:active:not(:disabled) { transform: translateY(0); }
+    .submit-btn:disabled {
+      opacity: 0.4;
       cursor: default;
       transform: none;
       box-shadow: none;
@@ -284,7 +256,7 @@
       font-weight: 600;
       color: #DC2626;
       text-align: center;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     /* ── Success ── */
@@ -292,9 +264,8 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      padding: 48px 28px 20px;
+      padding: 56px 28px;
       text-align: center;
-      flex: 1;
     }
     .success-screen.show { display: flex; animation: fadeUp 0.5s ease; }
 
@@ -304,29 +275,28 @@
     }
 
     .success-icon-wrap {
-      width: 90px; height: 90px;
+      width: 88px; height: 88px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--orange), var(--yellow));
       display: flex; align-items: center; justify-content: center;
       font-size: 40px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       box-shadow: 0 8px 28px rgba(245,166,35,0.35);
     }
-
     .success-title { font-size: 26px; font-weight: 900; color: var(--dark); margin-bottom: 12px; }
     .success-msg   { font-size: 16px; color: var(--muted); line-height: 1.75; font-weight: 500; }
 
     /* ── Footer ── */
     .footer {
-      padding: 16px 24px 32px;
+      padding: 24px 24px 32px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 6px;
     }
-    .footer img { width: 100px; height: auto; object-fit: contain; mix-blend-mode: multiply; }
-    .footer-name    { font-size: 16px; font-weight: 900; color: var(--dark); }
+    .footer img { width: 90px; height: auto; object-fit: contain; mix-blend-mode: multiply; }
+    .footer-name    { font-size: 15px; font-weight: 900; color: var(--dark); }
     .footer-tagline { font-size: 11px; color: var(--muted); font-weight: 500; }
   </style>
 </head>
@@ -354,18 +324,87 @@
     </div>
   </div>
 
-  <!-- Progress -->
-  <div class="progress-wrap" id="progressDots"></div>
-
-  <!-- Multi-step form -->
+  <!-- Form -->
   <div class="form-wrap" id="formWrap">
-    <div class="card" id="stepCard">
-      <div class="step-badge" id="stepBadge">שלב 1 מתוך 6</div>
-      <div class="q-label"   id="stepLabel"></div>
-      <div id="stepContent"></div>
-      <div class="spacer"></div>
-      <button class="action-btn" id="actionBtn" onclick="nextStep()" disabled>המשך</button>
+    <div class="form-card">
+
+      <!-- 1. שם -->
+      <div class="form-group">
+        <div class="q-label"><span class="q-num">1</span>שם מלא בבקשה</div>
+        <input type="text" class="field-input" id="f-name" placeholder="הקלד את שמך המלא">
+      </div>
+
+      <hr class="divider">
+
+      <!-- 2. גיל -->
+      <div class="form-group">
+        <div class="q-label"><span class="q-num">2</span>בן / בת כמה את/ה?</div>
+        <input type="text" class="field-input" id="f-age" placeholder="למשל: 35">
+      </div>
+
+      <hr class="divider">
+
+      <!-- 3. מינוס -->
+      <div class="form-group">
+        <div class="q-label"><span class="q-num">3</span>האם את/ה נמצא/ת במינוס?</div>
+        <div class="options" id="g-overdraft">
+          <button class="opt" data-val="כן" onclick="pickRadio('g-overdraft', this)">
+            <span class="opt-text">כן</span><span class="opt-icon"></span>
+          </button>
+          <button class="opt" data-val="לא" onclick="pickRadio('g-overdraft', this)">
+            <span class="opt-text">לא</span><span class="opt-icon"></span>
+          </button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- 4. מחסום -->
+      <div class="form-group">
+        <div class="q-label"><span class="q-num">4</span>מה המחסום העיקרי שמונע ממך להתחיל להשקיע כבר היום?</div>
+        <div class="options" id="g-obstacle">
+          <button class="opt checkbox" onclick="pickCheck(this)">
+            <span class="opt-text">מרגיש שיש יותר מדי מידע בחוץ ואני לא יודע מאיפה להתחיל וממה להיזהר</span>
+            <span class="opt-icon"></span>
+          </button>
+          <button class="opt checkbox" onclick="pickCheck(this)">
+            <span class="opt-text">אין לי מספיק ביטחון להשקיע עצמאית</span>
+            <span class="opt-icon"></span>
+          </button>
+          <button class="opt checkbox" onclick="pickCheck(this)">
+            <span class="opt-text">מפחד לעשות טעויות</span>
+            <span class="opt-icon"></span>
+          </button>
+          <button class="opt checkbox" onclick="pickCheck(this)">
+            <span class="opt-text">חוסר זמן / דחיינות</span>
+            <span class="opt-icon"></span>
+          </button>
+          <button class="opt checkbox" onclick="pickCheck(this)">
+            <span class="opt-text">אחר</span>
+            <span class="opt-icon"></span>
+          </button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- 5. הערות -->
+      <div class="form-group">
+        <div class="q-label"><span class="q-num">5</span>משהו נוסף שתרצה שאדע לפני שאתקשר?</div>
+        <textarea class="field-input" id="f-notes" placeholder="כתוב כאן בחופשיות... (לא חובה)"></textarea>
+      </div>
+
+      <hr class="divider">
+
+      <!-- 6. טלפון -->
+      <div class="form-group">
+        <div class="q-label"><span class="q-num">6</span>מספר הטלפון שלך כדי שאוכל לחזור אלייך?</div>
+        <input type="tel" class="field-input" id="f-phone" placeholder="050-0000000">
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitForm()">לחץ כאן לשליחת פרטים!</button>
       <div class="error-msg" id="errorMsg"></div>
+
     </div>
   </div>
 
@@ -385,175 +424,80 @@
 
 </div>
 <script>
-  var STEPS = [
-    { id:'name',      label:'מה שמך המלא?',                                                           type:'text',     placeholder:'הקלד את שמך המלא',    required:true  },
-    { id:'age',       label:'בן / בת כמה את/ה?',                                                      type:'text',     placeholder:'למשל: 35',              required:true  },
-    { id:'overdraft', label:'האם את/ה נמצא/ת במינוס?',                                               type:'radio',    options:['כן','לא'],                  required:true  },
-    { id:'obstacle',  label:'מה המחסום העיקרי שמונע ממך להתחיל להשקיע כבר היום?',                   type:'checkbox',
-      options:[
-        'מרגיש שיש יותר מדי מידע בחוץ ואני לא יודע מאיפה להתחיל וממה להיזהר',
-        'אין לי מספיק ביטחון להשקיע עצמאית',
-        'מפחד לעשות טעויות',
-        'חוסר זמן / דחיינות',
-        'אחר'
-      ],
-      required:true
-    },
-    { id:'notes',     label:'משהו נוסף שתרצה שאדע לפני שאתקשר?',                                    type:'textarea', placeholder:'כתוב כאן בחופשיות... (לא חובה)', required:false },
-    { id:'phone',     label:'מה מספר הטלפון שלך?',                                                   type:'tel',      placeholder:'050-0000000',             required:true  }
-  ];
-
-  var answers = {};
-  var cur = 0;
-
-  function buildDots() {
-    var wrap = document.getElementById('progressDots');
-    wrap.innerHTML = '';
-    STEPS.forEach(function(_, i) {
-      var d = document.createElement('div');
-      d.className = 'dot' + (i < cur ? ' done' : i === cur ? ' active' : '');
-      wrap.appendChild(d);
+  function pickRadio(groupId, btn) {
+    document.getElementById(groupId).querySelectorAll('.opt').forEach(function(b) {
+      b.classList.remove('selected');
+      b.querySelector('.opt-icon').textContent = '';
     });
+    btn.classList.add('selected');
+    btn.querySelector('.opt-icon').textContent = '✓';
   }
 
-  function renderStep() {
-    var step = STEPS[cur];
-    buildDots();
+  function pickCheck(btn) {
+    btn.classList.toggle('selected');
+    btn.querySelector('.opt-icon').textContent = btn.classList.contains('selected') ? '✓' : '';
+  }
 
-    document.getElementById('stepBadge').textContent = 'שלב ' + (cur+1) + ' מתוך ' + STEPS.length;
-    document.getElementById('stepLabel').textContent = step.label;
-    document.getElementById('errorMsg').style.display = 'none';
+  async function submitForm() {
+    var name  = document.getElementById('f-name').value.trim();
+    var age   = document.getElementById('f-age').value.trim();
+    var phone = document.getElementById('f-phone').value.trim();
+    var over  = document.querySelector('#g-overdraft .opt.selected');
+    var obs   = document.querySelectorAll('#g-obstacle .opt.selected');
+    var err   = document.getElementById('errorMsg');
 
-    var content = document.getElementById('stepContent');
-    content.innerHTML = '';
+    err.style.display = 'none';
 
-    var btn = document.getElementById('actionBtn');
-    btn.textContent = cur === STEPS.length - 1 ? 'לחץ כאן לשליחת פרטים!' : 'המשך ←';
-    btn.disabled = !!step.required;
+    if (!name)  { showErr('אנא הזן שם מלא'); return; }
+    if (!age)   { showErr('אנא הזן גיל'); return; }
+    if (!over)  { showErr('אנא ציין אם את/ה במינוס'); return; }
+    if (!obs.length) { showErr('אנא בחר לפחות מחסום אחד'); return; }
+    if (!phone) { showErr('אנא הזן מספר טלפון'); return; }
 
-    if (step.type === 'text' || step.type === 'tel') {
-      var inp = document.createElement('input');
-      inp.type = step.type === 'tel' ? 'tel' : 'text';
-      inp.className = 'field-input';
-      inp.placeholder = step.placeholder;
-      inp.value = answers[step.id] || '';
-      inp.addEventListener('input', function() {
-        answers[step.id] = this.value.trim();
-        btn.disabled = step.required && !this.value.trim();
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'שולח...';
+
+    var obstacles = Array.from(obs).map(function(b) { return b.querySelector('.opt-text').textContent; }).join(' | ');
+
+    var payload = {
+      'שם מלא':       name,
+      'גיל':          age,
+      'במינוס':       over.dataset.val,
+      'מחסום עיקרי':  obstacles,
+      'הערות נוספות': document.getElementById('f-notes').value.trim() || '—',
+      'מספר טלפון':   phone,
+      '_subject':     'שאלון התאמה חדש – פשוט להשקיע',
+      '_template':    'table',
+      '_captcha':     'false'
+    };
+
+    try {
+      var res = await fetch('https://formsubmit.co/ajax/tslr26@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
       });
-      inp.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && !btn.disabled) nextStep();
-      });
-      content.appendChild(inp);
-      setTimeout(function() { inp.focus(); }, 80);
-
-    } else if (step.type === 'textarea') {
-      var ta = document.createElement('textarea');
-      ta.className = 'field-input';
-      ta.placeholder = step.placeholder;
-      ta.value = answers[step.id] || '';
-      ta.addEventListener('input', function() { answers[step.id] = this.value.trim(); });
-      content.appendChild(ta);
+      var data = await res.json();
+      if (data.success === 'true' || data.success === true) {
+        document.getElementById('introWrap').style.display = 'none';
+        document.getElementById('formWrap').style.display  = 'none';
+        document.getElementById('successScreen').classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else { throw new Error(); }
+    } catch(e) {
+      showErr('אירעה שגיאה בשליחה. אנא נסה שנית.');
       btn.disabled = false;
-
-    } else if (step.type === 'radio') {
-      var wrap = document.createElement('div');
-      wrap.className = 'options';
-      step.options.forEach(function(opt) {
-        var b = document.createElement('button');
-        var chosen = answers[step.id] === opt;
-        b.className = 'opt' + (chosen ? ' selected' : '');
-        b.innerHTML = '<span class="opt-text">' + opt + '</span><span class="opt-icon">' + (chosen ? '✓' : '') + '</span>';
-        b.addEventListener('click', function() {
-          answers[step.id] = opt;
-          wrap.querySelectorAll('.opt').forEach(function(x) {
-            x.classList.remove('selected');
-            x.querySelector('.opt-icon').textContent = '';
-          });
-          b.classList.add('selected');
-          b.querySelector('.opt-icon').textContent = '✓';
-          btn.disabled = false;
-        });
-        wrap.appendChild(b);
-      });
-      content.appendChild(wrap);
-      if (answers[step.id]) btn.disabled = false;
-
-    } else if (step.type === 'checkbox') {
-      var wrap = document.createElement('div');
-      wrap.className = 'options';
-      var sel = answers[step.id] ? answers[step.id].split(' | ') : [];
-
-      step.options.forEach(function(opt) {
-        var isOn = sel.indexOf(opt) !== -1;
-        var b = document.createElement('button');
-        b.className = 'opt checkbox' + (isOn ? ' selected' : '');
-        b.innerHTML = '<span class="opt-text">' + opt + '</span><span class="opt-icon">' + (isOn ? '✓' : '') + '</span>';
-        b.addEventListener('click', function() {
-          b.classList.toggle('selected');
-          b.querySelector('.opt-icon').textContent = b.classList.contains('selected') ? '✓' : '';
-          var checked = wrap.querySelectorAll('.opt.selected');
-          answers[step.id] = Array.from(checked).map(function(x) { return x.querySelector('.opt-text').textContent; }).join(' | ');
-          btn.disabled = checked.length === 0;
-        });
-        wrap.appendChild(b);
-      });
-      content.appendChild(wrap);
-      if (sel.length > 0) btn.disabled = false;
-    }
-
-    var card = document.getElementById('stepCard');
-    card.style.animation = 'none';
-    void card.offsetHeight;
-    card.style.animation = 'slideIn 0.35s cubic-bezier(.4,0,.2,1) forwards';
-  }
-
-  async function nextStep() {
-    var btn = document.getElementById('actionBtn');
-    if (cur < STEPS.length - 1) {
-      cur++;
-      renderStep();
-    } else {
-      btn.disabled = true;
-      btn.textContent = 'שולח...';
-
-      var payload = {
-        'שם מלא':       answers['name']      || '',
-        'גיל':          answers['age']       || '',
-        'במינוס':       answers['overdraft'] || '',
-        'מחסום עיקרי':  answers['obstacle']  || '',
-        'הערות נוספות': answers['notes']     || '—',
-        'מספר טלפון':   answers['phone']     || '',
-        '_subject':     'שאלון התאמה חדש – פשוט להשקיע',
-        '_template':    'table',
-        '_captcha':     'false'
-      };
-
-      try {
-        var res = await fetch('https://formsubmit.co/ajax/tslr26@gmail.com', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        var data = await res.json();
-
-        if (data.success === 'true' || data.success === true) {
-          document.getElementById('formWrap').style.display    = 'none';
-          document.getElementById('progressDots').style.display = 'none';
-          document.getElementById('introWrap').style.display   = 'none';
-          document.getElementById('successScreen').classList.add('show');
-        } else { throw new Error(); }
-      } catch(e) {
-        var err = document.getElementById('errorMsg');
-        err.textContent = 'אירעה שגיאה בשליחה. אנא נסה שנית.';
-        err.style.display = 'block';
-        btn.disabled = false;
-        btn.textContent = 'לחץ כאן לשליחת פרטים!';
-      }
+      btn.textContent = 'לחץ כאן לשליחת פרטים!';
     }
   }
 
-  renderStep();
+  function showErr(msg) {
+    var err = document.getElementById('errorMsg');
+    err.textContent = msg;
+    err.style.display = 'block';
+    err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 </script>
 </body>
 </html>
