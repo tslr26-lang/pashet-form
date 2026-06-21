@@ -197,7 +197,7 @@
       font-size: 11px;
       transition: all 0.2s;
     }
-    .opt.checkbox .opt-icon { border-radius: 5px; }
+    .opt.checkbox .opt-icon { border-radius: 50%; }
 
     .opt:hover {
       background: var(--opt-hover);
@@ -295,7 +295,7 @@
       align-items: center;
       gap: 6px;
     }
-    .footer img { width: 90px; height: auto; object-fit: contain; mix-blend-mode: multiply; }
+    .footer img { width: 160px; height: auto; object-fit: contain; mix-blend-mode: multiply; }
     .footer-name    { font-size: 15px; font-weight: 900; color: var(--dark); }
     .footer-tagline { font-size: 11px; color: var(--muted); font-weight: 500; }
   </style>
@@ -320,6 +320,8 @@
         <br><br>
         <strong>חשוב לי לציין:</strong> מילוי השאלון אינו מבטיח הצטרפות אוטומטית לסדנה.
         זהו שלב ראשוני בלבד, שנועד לוודא שיש בינינו התאמה מלאה ושאני באמת יכול להביא לך ערך מקסימלי.
+        <br><br>
+        שאלון ההתאמה מנוסח בלשון זכר אך פונה ל-2 המינים.
       </div>
     </div>
   </div>
@@ -338,7 +340,7 @@
 
       <!-- 2. גיל -->
       <div class="form-group">
-        <div class="q-label"><span class="q-num">2</span>בן / בת כמה את/ה?</div>
+        <div class="q-label"><span class="q-num">2</span>בן כמה אתה?</div>
         <input type="text" class="field-input" id="f-age" placeholder="למשל: 35">
       </div>
 
@@ -346,7 +348,7 @@
 
       <!-- 3. מינוס -->
       <div class="form-group">
-        <div class="q-label"><span class="q-num">3</span>האם את/ה נמצא/ת במינוס?</div>
+        <div class="q-label"><span class="q-num">3</span>האם אתה נמצא במינוס?</div>
         <div class="options" id="g-overdraft">
           <button class="opt" data-val="כן" onclick="pickRadio('g-overdraft', this)">
             <span class="opt-text">כן</span><span class="opt-icon"></span>
