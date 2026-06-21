@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מחשבון כדאיות מעבר לתיק השקעות | פשוט להשקיע</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --green:        #16A34A;
+      --green-light:  #F0FDF4;
+      --green-border: #86EFAC;
+      --gray:         #6B7280;
+      --dark:         #111827;
+      --border:       #E5E7EB;
+      --surface:      #F9FAFB;
+      --red:          #DC2626;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Heebo', sans-serif;
+      background: #fff;
+      color: var(--dark);
+      direction: rtl;
+    }
+
+    .page {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 0 18px 72px;
+    }
+
+    /* ── Header ── */
+    .header {
+      padding: 36px 0 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .brand    { font-size: 12px; font-weight: 800; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+    .h-title  { font-size: 30px; font-weight: 900; line-height: 1.25; margin-bottom: 8px; }
+    .h-sub    { font-size: 15px; color: var(--gray); font-weight: 500; }
+
+    /* ── Section ── */
+    .section       { margin-bottom: 28px; }
+    .section-label {
+      font-size: 11px; font-weight: 800; color: var(--gray);
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px;
+    }
+
+    /* ── Grid ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+    @media (max-width: 500px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 380px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ── Field ── */
+    .field { display: flex; flex-direction: column; gap: 5px; }
+
+    .f-label {
+      font-size: 13px; font-weight: 700; color: var(--dark);
+    }
+    .f-hint { font-size: 11px; color: var(--gray); }
+
+    .f-input-wrap { position: relative; }
+
+    .f-input-wrap input {
+      width: 100%;
+      padding: 11px 14px 11px 38px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      font-family: 'Heebo', sans-serif;
+      background: var(--surface);
+      direction: ltr;
+      text-align: right;
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .f-input-wrap input:focus {
+      border-color: var(--dark);
+      background: #fff;
+    }
+    .f-input-wrap input.green-input:focus { border-color: var(--green); }
+
+    .f-unit {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px; font-weight: 700;
+      color: var(--gray);
+      pointer-events: none;
+    }
+
+    /* ── Divider ── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+    /* ── Result box ── */
+    .result-box {
+      border-radius: 16px;
+      padding: 32px 24px;
+      margin-bottom: 28px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      text-align: center;
+      transition: all 0.3s;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .result-box.win {
+      border-color: var(--green-border);
+      background: var(--green-light);
+    }
+
+    .r-eyebrow { font-size: 13px; font-weight: 700; }
+    .r-eyebrow.green { color: var(--green); }
+    .r-eyebrow.gray  { color: var(--gray); }
+
+    .r-amount { font-size: 52px; font-weight: 900; line-height: 1; }
+    .r-amount.green { color: var(--green); }
+    .r-amount.gray  { color: var(--dark); }
+
+    .r-sub { font-size: 16px; font-weight: 600; }
+    .r-sub.green { color: var(--green); }
+    .r-sub.gray  { color: var(--gray); }
+
+    .r-breakeven {
+      display: inline-block;
+      background: #fff;
+      border: 1.5px solid var(--green-border);
+      color: var(--green);
+      font-size: 13px; font-weight: 700;
+      padding: 5px 14px; border-radius: 20px;
+      margin-top: 6px;
+    }
+
+    .r-note {
+      font-size: 12px; color: var(--gray);
+      line-height: 1.6; margin-top: 10px;
+      max-width: 360px;
+    }
+
+    .r-placeholder { font-size: 15px; font-weight: 600; color: #D1D5DB; }
+
+    /* ── Chart ── */
+    .chart-card {
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .chart-legend {
+      display: flex; gap: 20px; margin-bottom: 16px;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 700;
+    }
+    .ldot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .ldot.green { background: var(--green); }
+    .ldot.gray  { background: var(--gray); }
+
+    /* ── Table ── */
+    .summary {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+    .summary th {
+      padding: 10px 14px;
+      font-size: 13px; font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-align: right;
+    }
+    .summary th.g { color: var(--green); }
+    .summary th.gr { color: var(--gray); }
+    .summary td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .summary td.lbl { color: var(--gray); font-weight: 600; }
+    .summary td.g   { color: var(--green); font-weight: 800; }
+    .summary td.r   { color: var(--red); }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      text-align: center;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 6px;
+    }
+    .footer img     { width: 130px; mix-blend-mode: multiply; }
+    .footer-name    { font-size: 14px; font-weight: 900; }
+    .footer-tagline { font-size: 12px; color: var(--gray); }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Header ── -->
+  <div class="header">
+    <div class="brand">פשוט להשקיע</div>
+    <div class="h-title">מחשבון כדאיות מעבר<br>לתיק השקעות עצמאי</div>
+    <div class="h-sub">הזן את הנתונים שלך וראה מה משתלם יותר לאורך זמן</div>
+  </div>
+
+  <!-- ── Section 1: הקופה ── -->
+  <div class="section">
+    <div class="section-label">הקופה שלך</div>
+    <div class="grid-2">
+      <div class="field">
+        <div class="f-label">יתרה נוכחית</div>
+        <div class="f-input-wrap">
+          <input type="number" id="balance" placeholder="200000" min="0" oninput="recalc()">
+          <span class="f-unit">₪</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="f-label">רווח צבור</div>
+        <div class="f-hint">הרווח שצברת מעל הקרן</div>
+        <div class="f-input-wrap">
+          <input type="number" id="profit" placeholder="50000" min="0" oninput="recalc()">
+          <span class="f-unit">₪</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 2: עלויות ── -->
+  <div class="section">
+    <div class="section-label">עלויות שנתיות</div>
+    <div class="grid-3">
+      <div class="field">
+        <div class="f-label">דמי ניהול קופה</div>
+        <div class="f-input-wrap">
+          <input type="number" id="fundMgmt" placeholder="0.5" step="0.01" min="0" oninput="recalc()">
+          <span class="f-unit">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="f-label">הוצאות ניהול השקעות</div>
+        <div class="f-input-wrap">
+          <input type="number" id="fundExp" placeholder="0.3" step="0.01" min="0" oninput="recalc()">
+          <span class="f-unit">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="f-label" style="color:var(--green)">דמי ניהול תיק פרטי</div>
+        <div class="f-input-wrap">
+          <input type="number" id="privateFee" placeholder="0.1" step="0.01" min="0" value="0.1" class="green-input" oninput="recalc()">
+          <span class="f-unit">%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 3: הנחות ── -->
+  <div class="section">
+    <div class="section-label">הנחות השקעה</div>
+    <div class="grid-3">
+      <div class="field">
+        <div class="f-label">הפקדות חודשיות</div>
+        <div class="f-input-wrap">
+          <input type="number" id="monthly" placeholder="0" min="0" value="0" oninput="recalc()">
+          <span class="f-unit">₪</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="f-label">אופק השקעה</div>
+        <div class="f-input-wrap">
+          <input type="number" id="horizon" placeholder="15" min="1" max="40" oninput="recalc()">
+          <span class="f-unit">שנים</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="f-label">תשואה שנתית</div>
+        <div class="f-input-wrap">
+          <input type="number" id="retRate" placeholder="10" step="0.5" min="0" value="10" oninput="recalc()">
+          <span class="f-unit">%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ── Result ── -->
+  <div class="result-box" id="resultBox">
+    <div class="r-placeholder">הזן נתונים כדי לראות את התוצאה</div>
+  </div>
+
+  <!-- ── Chart ── -->
+  <div class="chart-card" id="chartCard" style="display:none">
+    <div class="chart-legend">
+      <div class="legend-item"><div class="ldot green"></div>תיק השקעות עצמאי</div>
+      <div class="legend-item"><div class="ldot gray"></div>קופת גמל להשקעה</div>
+    </div>
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <!-- ── Table ── -->
+  <div id="tableWrap" style="display:none">
+    <table class="summary">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="gr">קופת גמל להשקעה</th>
+          <th class="g">תיק השקעות עצמאי</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- ── Footer ── -->
+  <div class="footer">
+    <img src="logo.png" alt="פשוט להשקיע">
+    <div class="footer-name">פשוט להשקיע</div>
+    <div class="footer-tagline">הדרך הפשוטה להשקיע נכון</div>
+  </div>
+
+</div>
+<script>
+  var myChart = null;
+
+  function fmt(n) {
+    return '₪' + Math.round(Math.abs(n)).toLocaleString('he-IL');
+  }
+
+  function recalc() {
+    var balance    = parseFloat(document.getElementById('balance').value);
+    var profit     = parseFloat(document.getElementById('profit').value)   || 0;
+    var fundMgmt   = parseFloat(document.getElementById('fundMgmt').value);
+    var fundExp    = parseFloat(document.getElementById('fundExp').value);
+    var privateFee = parseFloat(document.getElementById('privateFee').value) ?? 0.1;
+    var monthly    = parseFloat(document.getElementById('monthly').value)   || 0;
+    var horizon    = parseInt(document.getElementById('horizon').value);
+    var retRate    = parseFloat(document.getElementById('retRate').value)   || 10;
+
+    if (!balance || isNaN(fundMgmt) || isNaN(fundExp) || !horizon) {
+      reset(); return;
+    }
+
+    // Tax event on switch
+    var tax      = profit * 0.25;
+    var netStart = balance - tax;
+
+    // Monthly rates
+    var fundMonthly    = ((retRate - fundMgmt - fundExp)  / 100) / 12;
+    var privateMonthly = ((retRate - privateFee)           / 100) / 12;
+
+    // Year-by-year simulation
+    var years = [], fundVals = [], privVals = [];
+    var f = balance, p = netStart;
+    var breakEvenYear = null;
+
+    years.push(0); fundVals.push(Math.round(f)); privVals.push(Math.round(p));
+
+    for (var y = 1; y <= horizon; y++) {
+      for (var m = 0; m < 12; m++) {
+        f = f * (1 + fundMonthly)    + monthly;
+        p = p * (1 + privateMonthly) + monthly;
+      }
+      years.push(y);
+      fundVals.push(Math.round(f));
+      privVals.push(Math.round(p));
+      if (breakEvenYear === null && p > f) breakEvenYear = y;
+    }
+
+    var diff       = p - f;
+    var portWins   = diff > 0;
+    var totalDep   = monthly * horizon * 12;
+
+    // ── Result box ──
+    var rb = document.getElementById('resultBox');
+    rb.className = portWins ? 'result-box win' : 'result-box';
+    if (portWins) {
+      rb.innerHTML =
+        '<div class="r-eyebrow green">תיק השקעות עצמאי</div>' +
+        '<div class="r-amount green">+' + fmt(diff) + '</div>' +
+        '<div class="r-sub green">יותר בעוד ' + horizon + ' שנים</div>' +
+        (breakEvenYear ? '<div class="r-breakeven">✓ התיק מוביל החל משנה ' + breakEvenYear + '</div>' : '') +
+        '<div class="r-note">הסכומים לפני מס פדיון סופי — שיחול על שני המסלולים כאחד</div>';
+    } else {
+      rb.innerHTML =
+        '<div class="r-eyebrow gray">קופת גמל להשקעה</div>' +
+        '<div class="r-amount gray">+' + fmt(Math.abs(diff)) + '</div>' +
+        '<div class="r-sub gray">יותר בעוד ' + horizon + ' שנים</div>' +
+        '<div class="r-note">עלות המס בעת המעבר (' + fmt(tax) + ') גבוהה מהחיסכון בדמי הניהול לאורך האופק הנבחר</div>';
+    }
+
+    // ── Chart ──
+    document.getElementById('chartCard').style.display = 'block';
+
+    var bePlugin = {
+      id: 'beLine',
+      afterDraw: function(chart) {
+        if (!breakEvenYear) return;
+        var ctx = chart.ctx, xs = chart.scales.x, ys = chart.scales.y;
+        var x = xs.getPixelForValue(breakEvenYear);
+        ctx.save();
+        ctx.setLineDash([5, 4]);
+        ctx.strokeStyle = '#16A34A';
+        ctx.lineWidth   = 1.5;
+        ctx.globalAlpha = 0.55;
+        ctx.beginPath();
+        ctx.moveTo(x, ys.top);
+        ctx.lineTo(x, ys.bottom);
+        ctx.stroke();
+        ctx.restore();
+      }
+    };
+
+    if (myChart) { myChart.destroy(); myChart = null; }
+
+    myChart = new Chart(document.getElementById('myChart'), {
+      type: 'line',
+      plugins: [bePlugin],
+      data: {
+        labels: years,
+        datasets: [
+          {
+            label: 'תיק השקעות עצמאי',
+            data: privVals,
+            borderColor: '#16A34A',
+            backgroundColor: 'rgba(22,163,74,0.07)',
+            borderWidth: 2.5,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            tension: 0.35,
+            fill: true
+          },
+          {
+            label: 'קופת גמל להשקעה',
+            data: fundVals,
+            borderColor: '#9CA3AF',
+            backgroundColor: 'rgba(156,163,175,0.05)',
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            tension: 0.35,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            rtl: true,
+            titleFont: { family: 'Heebo', weight: '700' },
+            bodyFont:  { family: 'Heebo', weight: '600' },
+            callbacks: {
+              title: function(i) { return 'שנה ' + i[0].label; },
+              label: function(i) { return i.dataset.label + ': ' + fmt(i.parsed.y); }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: '#F3F4F6' },
+            ticks: {
+              font: { family: 'Heebo', weight: '600', size: 11 },
+              color: '#9CA3AF',
+              maxTicksLimit: 9,
+              callback: function(v) { return v % 5 === 0 ? 'שנה ' + v : ''; }
+            }
+          },
+          y: {
+            grid: { color: '#F3F4F6' },
+            ticks: {
+              font: { family: 'Heebo', weight: '600', size: 11 },
+              color: '#9CA3AF',
+              callback: function(v) {
+                if (v >= 1000000) return '₪' + (v / 1000000).toFixed(1) + 'M';
+                if (v >= 1000)    return '₪' + (v / 1000).toFixed(0)    + 'K';
+                return '₪' + v;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // ── Table ──
+    document.getElementById('tableWrap').style.display = 'block';
+    var tb = document.getElementById('tableBody');
+    var fProfit = f - balance - totalDep;
+    var pProfit = p - netStart - totalDep;
+
+    tb.innerHTML =
+      '<tr>' +
+        '<td class="lbl">סכום סופי</td>' +
+        '<td>' + fmt(f) + '</td>' +
+        '<td class="' + (portWins ? 'g' : '') + '">' + fmt(p) + '</td>' +
+      '</tr>' +
+      '<tr>' +
+        '<td class="lbl">סה"כ השקעה ראשונית</td>' +
+        '<td>' + fmt(balance) + '</td>' +
+        '<td>' + fmt(netStart) + '</td>' +
+      '</tr>' +
+      '<tr>' +
+        '<td class="lbl">סה"כ הפקדות עתידיות</td>' +
+        '<td>' + fmt(totalDep) + '</td>' +
+        '<td>' + fmt(totalDep) + '</td>' +
+      '</tr>' +
+      '<tr>' +
+        '<td class="lbl">רווח נטו</td>' +
+        '<td>' + fmt(fProfit) + '</td>' +
+        '<td class="' + (portWins ? 'g' : '') + '">' + fmt(pProfit) + '</td>' +
+      '</tr>' +
+      '<tr>' +
+        '<td class="lbl">מס מעבר חד-פעמי</td>' +
+        '<td>—</td>' +
+        '<td class="r">' + (tax > 0 ? fmt(tax) : '—') + '</td>' +
+      '</tr>';
+  }
+
+  function reset() {
+    var rb = document.getElementById('resultBox');
+    rb.className = 'result-box';
+    rb.innerHTML = '<div class="r-placeholder">הזן נתונים כדי לראות את התוצאה</div>';
+    document.getElementById('chartCard').style.display  = 'none';
+    document.getElementById('tableWrap').style.display  = 'none';
+    if (myChart) { myChart.destroy(); myChart = null; }
+  }
+</script>
+</body>
+</html>
