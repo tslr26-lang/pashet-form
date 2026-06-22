@@ -43,6 +43,9 @@
     .brand   { font-size: 12px; font-weight: 800; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
     .h-title { font-size: 30px; font-weight: 900; line-height: 1.25; margin-bottom: 8px; }
     .h-sub   { font-size: 15px; color: var(--gray); font-weight: 500; }
+    .h-note  { font-size: 13px; color: var(--dark); font-weight: 500; line-height: 1.65; margin-top: 10px; }
+    .h-note.dim { color: var(--gray); font-size: 12px; }
+    .f-hint  { font-size: 11px; color: var(--gray); line-height: 1.45; margin-top: 2px; }
 
     /* ── Section ── */
     .section       { margin-bottom: 28px; }
@@ -175,6 +178,8 @@
     <div class="brand">פשוט להשקיע</div>
     <div class="h-title">מחשבון כדאיות מעבר<br>לתיק השקעות עצמאי</div>
     <div class="h-sub">הזן את הנתונים שלך וראה מה משתלם יותר לאורך זמן</div>
+    <div class="h-note">הפקדות חדשות, כלומר כסף שלא נמצא בגמל להשקעה, תמיד כדאי להפקיד בתיק השקעות פרטי.</div>
+    <div class="h-note dim">*המחשבון הזה מתייחס רק לקופת הגמל <u>להשקעה</u> ולא לקופת הגמל.</div>
   </div>
 
   <!-- ── Section 1: הקופה ── -->
@@ -194,6 +199,7 @@
           <input type="text" id="profit" inputmode="numeric" placeholder="" oninput="fmtInput(this);recalc()">
           <span class="f-unit">₪</span>
         </div>
+        <div class="f-hint">את זה מבררים עם חברת הביטוח.</div>
       </div>
     </div>
   </div>
@@ -215,6 +221,7 @@
           <input type="number" id="fundExp" inputmode="decimal" placeholder="" step="0.01" min="0" oninput="recalc()">
           <span class="f-unit">%</span>
         </div>
+        <div class="f-hint">את זה אפשר לבדוק במחשבון עלות שנתית צפויה.</div>
       </div>
       <div class="field">
         <div class="f-label" style="color:var(--gray)">דמי ניהול תיק השקעות</div>
@@ -245,7 +252,7 @@
         </div>
       </div>
       <div class="field">
-        <div class="f-label">תשואה שנתית</div>
+        <div class="f-label">תשואה שנתית ממוצעת</div>
         <div class="f-input-wrap">
           <input type="number" id="retRate" inputmode="decimal" placeholder="" step="0.5" min="0" value="10" oninput="recalc()">
           <span class="f-unit">%</span>
@@ -328,18 +335,18 @@
     var tax      = profit * 0.25;
     var netStart = balance - tax;
 
-    var fundMonthly    = ((retRate - fundMgmt - fundExp) / 100) / 12;
-    var privateMonthly = ((retRate - privateFee)          / 100) / 12;
+    /* דמי ניהול בישראל מוצגים ללא מע"מ — מוסיפים 17% */
+    var fundAnnual    = 1 + (retRate - fundMgmt * 1.17 - fundExp) / 100;
+    var privateAnnual = 1 + (retRate - privateFee) / 100;
+    var annualDep     = monthly * 12;
 
     var years = [0], fundVals = [Math.round(balance)], privVals = [Math.round(netStart)];
     var f = balance, p = netStart;
     var breakEvenYear = null;
 
     for (var y = 1; y <= horizon; y++) {
-      for (var m = 0; m < 12; m++) {
-        f = f * (1 + fundMonthly)    + monthly;
-        p = p * (1 + privateMonthly) + monthly;
-      }
+      f = f * fundAnnual    + annualDep;
+      p = p * privateAnnual + annualDep;
       years.push(y);
       fundVals.push(Math.round(f));
       privVals.push(Math.round(p));
