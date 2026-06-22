@@ -352,8 +352,14 @@
 
     if (!balance || isNaN(fundMgmt) || isNaN(fundExp) || !horizon) { reset(); return; }
 
-    var tax      = profit * 0.25;
-    var netStart = balance - tax;
+    /* מיסוי ריאלי — האינפלציה (2% לשנה) מגדילה את בסיס העלות,
+       ולכן הרווח הריאלי החייב במס קטן מהרווח הנומינלי */
+    var INFLATION     = 0.02;
+    var costBasis     = balance - profit;
+    var inflatedBasis = costBasis * Math.pow(1 + INFLATION, horizon);
+    var realGain      = Math.max(0, balance - inflatedBasis);
+    var tax           = realGain * 0.25;
+    var netStart      = balance - tax;
 
     /* דמי ניהול בישראל מוצגים ללא מע"מ — מוסיפים 17% */
     var fundAnnual    = 1 + (retRate - fundMgmt * 1.17 - fundExp) / 100;
@@ -393,7 +399,7 @@
         '<div class="r-eyebrow gray">קופת גמל להשקעה</div>' +
         '<div class="r-amount gray">+' + fmt(Math.abs(diff)) + '</div>' +
         '<div class="r-sub gray">יותר בעוד ' + horizon + ' שנים</div>' +
-        '<div class="r-note-lg">עלות המס בעת המעבר (' + fmt(tax) + ') גבוהה מהחיסכון בדמי הניהול לאורך האופק הנבחר</div>';
+        '<div class="r-note-lg">עלות המס בעת המעבר (' + fmt(tax) + ', לאחר מיסוי ריאלי) גבוהה מהחיסכון בדמי הניהול לאורך האופק הנבחר</div>';
     }
 
     /* ── Chart ── */
@@ -496,7 +502,7 @@
       row('סה"כ השקעה ראשונית',   fmt(balance),   fmt(netStart),  false) +
       row('סה"כ הפקדות עתידיות',  fmt(totalDep),  fmt(totalDep),  false) +
       row('רווח נטו',             fmt(fProfit),   fmt(pProfit),   portWins) +
-      '<tr><td class="lbl">מס מעבר חד-פעמי</td><td>—</td>' +
+      '<tr><td class="lbl">מס מעבר חד-פעמי <span style="font-size:11px;color:var(--green);font-weight:700">(מיסוי ריאלי, אינפלציה 2%/שנה)</span></td><td>—</td>' +
         '<td class="r">' + (tax > 0 ? fmt(tax) : '—') + '</td></tr>';
   }
 
