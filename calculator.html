@@ -204,7 +204,7 @@
   <!-- ── Section 1: הקופה ── -->
   <div class="section">
     <div class="section-label">הקופה שלך</div>
-    <div class="grid-2">
+    <div class="grid-3">
       <div class="field">
         <div class="f-label">יתרה נוכחית</div>
         <div class="f-input-wrap">
@@ -218,6 +218,14 @@
         <div class="f-input-wrap">
           <input type="text" id="profit" inputmode="numeric" placeholder="" oninput="fmtInput(this);recalc()">
           <span class="f-unit">₪</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="f-label">ותק הקופה</div>
+        <div class="f-hint">כמה שנים הכסף נמצא בקופה?</div>
+        <div class="f-input-wrap">
+          <input type="number" id="seniority" inputmode="numeric" placeholder="" min="0" max="40" oninput="recalc()">
+          <span class="f-unit">שנים</span>
         </div>
       </div>
     </div>
@@ -350,13 +358,14 @@
     var horizon    = parseInt(document.getElementById('horizon').value);
     var retRate    = parseFloat(document.getElementById('retRate').value) || 10;
 
-    if (!balance || isNaN(fundMgmt) || isNaN(fundExp) || !horizon) { reset(); return; }
+    var seniority = parseFloat(document.getElementById('seniority').value);
+    if (!balance || isNaN(fundMgmt) || isNaN(fundExp) || !horizon || isNaN(seniority)) { reset(); return; }
 
-    /* מיסוי ריאלי — האינפלציה (2% לשנה) מגדילה את בסיס העלות,
-       ולכן הרווח הריאלי החייב במס קטן מהרווח הנומינלי */
+    /* מיסוי ריאלי — האינפלציה (2% לשנה) על ותק הקופה בפועל
+       מגדילה את בסיס העלות ומקטינה את הרווח הריאלי החייב במס */
     var INFLATION     = 0.02;
     var costBasis     = balance - profit;
-    var inflatedBasis = costBasis * Math.pow(1 + INFLATION, horizon);
+    var inflatedBasis = costBasis * Math.pow(1 + INFLATION, seniority);
     var realGain      = Math.max(0, balance - inflatedBasis);
     var tax           = realGain * 0.25;
     var netStart      = balance - tax;
