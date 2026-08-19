@@ -2,7 +2,9 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" type="image/png" href="favicon.png">
   <title>שאלון התאמה | פשוט להשקיע</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -298,6 +300,7 @@
     .footer img { width: 160px; height: auto; object-fit: contain; mix-blend-mode: multiply; }
     .footer-name    { font-size: 15px; font-weight: 900; color: var(--dark); }
     .footer-tagline { font-size: 11px; color: var(--muted); font-weight: 500; }
+    .footer-copyright { font-size: 10px; color: var(--muted); font-weight: 500; margin-top: 6px; }
   </style>
 </head>
 <body>
@@ -422,6 +425,7 @@
     <img src="logo.png" alt="פשוט להשקיע">
     <div class="footer-name">פשוט להשקיע</div>
     <div class="footer-tagline">הדרך הפשוטה להשקיע נכון</div>
+    <div class="footer-copyright">© כל הזכויות שמורות</div>
   </div>
 
 </div>
@@ -475,7 +479,7 @@
     };
 
     try {
-      var res = await fetch('https://formsubmit.co/ajax/tslr26@gmail.com', {
+      var res = await fetch('https://notify.tomereliyahu.com/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
@@ -501,5 +505,10 @@
     err.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 </script>
+  <div style="text-align:center; padding:14px 0 6px; font-size:0.75rem; color:#8a8a8a; font-family:'Assistant',sans-serif;">
+    <a href="https://privacy.tomereliyahu.com" style="color:inherit; text-decoration:underline;">מדיניות פרטיות</a>
+    ·
+    <a href="https://accessibility.tomereliyahu.com" style="color:inherit; text-decoration:underline;">הצהרת נגישות</a>
+  </div>
 </body>
 </html>
